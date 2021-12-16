@@ -21,7 +21,7 @@ static const adc_bits_width_t width = ADC_WIDTH_BIT_12; //Configuramos la precic
 § 6 dB attenuation (ADC_ATTEN_DB_6). ). Escala de voltaje 2.2 V
 § 11 dB attenuation (ADC_ATTEN_DB_11). Escala de voltaje 3.9 V (3.3V por Vdd)
 */
-static const adc_atten_t atten = ADC_ATTEN_DB_0; //La atenuación escala de voltaje 1.1V
+static const adc_atten_t atten = ADC_ATTEN_DB_11; //La atenuación escala de voltaje 3.9V
 static const adc_unit_t unit = ADC_UNIT_1;
 
 
@@ -74,10 +74,10 @@ void app_main(void)
             }
         }
         adc_reading /= NO_OF_SAMPLES;
-        int centimetros = 1374 * pow(adc_reading, -1.04f);
+        float centimetros = 13500.0 / (float) adc_reading;
         //Convert adc_reading to voltage in mV
         uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, adc_chars);
-        printf("ADC CH: %d\tRaw: %d\tVoltage: %dmV\t cm: %02d\n", ((adc1_channel_t)channel),
+        printf("ADC CH: %d\tRaw: %d\tVoltage: %dmV\t cm: %f\n", ((adc1_channel_t)channel),
                                                                     adc_reading, voltage,
                                                                     centimetros);
         vTaskDelay(pdMS_TO_TICKS(1000));
